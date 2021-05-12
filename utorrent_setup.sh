@@ -7,13 +7,13 @@
 
 mkdir downloads
 cd ~/downloads
-#libraries
+# libraries openssl
 yum install -y wget glibc openssl* libgcc unzip
 ln -s /usr/lib64/libcrypto.so.0.9.8e /usr/lib64/libcrypto.so.0.9.8
 ln -s /usr/lib64/libssl.so.0.9.8e /usr/lib64/libssl.so.0.9.8
+# do u need libraries 1.0.0.so
 wget ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home:/jayvdb:/toggl/CentOS_7/x86_64/libopenssl1_0_0-1.0.2o-50.1.x86_64.rpm
 sudo yum install ./libopenssl1_0_0-1.0.2o-50.1.x86_64.rpm
-
 #Utorrent
 wget https://www.utorrent.com/intl/pt/downloads/complete/track/beta/os/linux-x64-ubuntu-12-04/utserver.tar.gz
 sudo tar -xvzf utserver.tar.gz -C /opt/
@@ -33,10 +33,6 @@ Restart=on-abort
 WantedBy=multi-user.target
 EOF
 
-
-# need libraries 1.0.0.so
-
-
 chown root:root /usr/lib/systemd/system/utserver.service
 
 sudo lsof -i -P -n | grep LISTEN
@@ -48,10 +44,14 @@ sudo netstat -tulpn | grep LISTEN
 sudo ss -tulpn | grep LISTEN
 #tcp    LISTEN     0      10     [::]:8080               [::]:*                   users:(("utserver",pid=5841,fd=13))
 
+# start utorrent as utserver service
 systemctl start utserver.service
 echo "Browse to http://server:8080/gui and login with user admin and no password."
 echo "After logging in, go to settings and setup an admin password."
 echo "Want settings?  Google utserver.conf for examples..."
+
+#need status
 systemctl status utserver.service
 
+#need stop
 #systemctl stop utserver.service
