@@ -4,6 +4,7 @@
 # UTORRENT CENTOS 12-05-2021  #
 # ZER0DAWN                    #
 # #############################
+
 mkdir downloads
 cd ~/downloads
 #libraries
@@ -38,9 +39,19 @@ EOF
 
 chown root:root /usr/lib/systemd/system/utserver.service
 
+sudo lsof -i -P -n | grep LISTEN
+#utserver  5841     root   12u  IPv4  54350      0t0  TCP *:8080 (LISTEN)
+#utserver  5841     root   13u  IPv6  54351      0t0  TCP *:8080 (LISTEN)
+sudo netstat -tulpn | grep LISTEN
+#tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      5841/utserver
+#tcp        0      0 127.0.0.1:10000         0.0.0.0:*               LISTEN      5841/utserver
+sudo ss -tulpn | grep LISTEN
+#tcp    LISTEN     0      10     [::]:8080               [::]:*                   users:(("utserver",pid=5841,fd=13))
+
 systemctl start utserver.service
 echo "Browse to http://server:8080/gui and login with user admin and no password."
 echo "After logging in, go to settings and setup an admin password."
 echo "Want settings?  Google utserver.conf for examples..."
 systemctl status utserver.service
+
 #systemctl stop utserver.service
