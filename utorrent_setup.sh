@@ -15,7 +15,7 @@ ln -s /usr/lib64/libssl.so.0.9.8e /usr/lib64/libssl.so.0.9.8
 wget ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home:/jayvdb:/toggl/CentOS_7/x86_64/libopenssl1_0_0-1.0.2o-50.1.x86_64.rpm
 sudo yum install ./libopenssl1_0_0-1.0.2o-50.1.x86_64.rpm
 #Utorrent
-wget https://www.utorrent.com/intl/pt/downloads/complete/track/beta/os/linux-x64-ubuntu-12-04/utserver.tar.gz
+wget https://download-hr.utorrent.com/track/beta/endpoint/utserver/os/linux-x64-ubuntu-13-04/utserver.tar.gz
 sudo tar -xvzf utserver.tar.gz -C /opt/
 sudo chmod -R 755 /opt/utorrent-server-alpha-v3_3/
 sudo ln -s /opt/utorrent-server-alpha-v3_3/utserver /usr/bin/utserver
