@@ -1,30 +1,42 @@
-33 linhas lidas ]
+
 #!/bin/bash
-# Took me awhile to figure out how to install utserver on Centos 7 x86_64... Especially with the new systemd subsystem.  None of the builds I saw support it - but it will work with a couple symlinks and compa$yum install glibc libgcc openssl krb5-libs libcom_err zlib keyutils-libs libselinux glibc glibc.i[36]86 libgcc libgcc.i[36]86 openssl openssl.i[36]86 krb5-libs krb5-libs.i[36]86 libcom_err libcom_err.i[36]86 $ln -s /usr/lib/libssl.so.0.9.8e /lib/libssl.so.0.9.8
-ln -s /usr/lib/libcrypto.so.0.9.8e /lib/libcrypto.so.0.9.8
-mkdir /opt/utserver
-wget -O /opt/utserver/utserver.tar.gz http://download.ap.bittorrent.com/track/beta/endpoint/utserver/os/linux-x64-ubuntu-13-04 -O utserver.tar.gz
-cd /opt/
-tar zxf utserver.tar.gz
-mv /opt/utorrent-server-alpha-v3_3/* /opt/utserver/
-#rm -rf /opt/utorrent-server-alpha-v3_3
+cd /home/
+# ln -s /usr/lib64/libcrypto.so.0.9.8e /usr/lib64/libcrypto.so.0.9.8
+# ln -s /usr/lib64/libssl.so.0.9.8e /usr/lib64/libssl.so.0.9.8
+mkdir downloads
+
+cd /home/downloads
+
+wget https://www.utorrent.com/intl/pt/downloads/complete/track/beta/os/linux-x64-ubuntu-12-04/utserver.tar.gz
+sudo tar -xvzf utserver.tar.gz -C /opt/
+
+sudo chmod -R 755 /opt/utorrent-server-alpha-v3_3/
+
+sudo ln -s /opt/utorrent-server-alpha-v3_3/utserver /usr/bin/utserver
 
 cat << EOF > /usr/lib/systemd/system/utserver.service
 [Unit]
 Description=uTorrent Server (8080)
 After=network.target
-
 [Service]
-WorkingDirectory=/opt/utserver
+WorkingDirectory=/opt/utorrent-server-alpha-v3_3
 User=root
-ExecStart=/opt/utserver/utserver
+ExecStart=/opt/utorrent-server-alpha-v3_3/utserver
 Restart=on-abort
-
 [Install]
 WantedBy=multi-user.target
 EOF
+
+
+# need libraries 1.0.0.so
+wget ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home:/jayvdb:/toggl/CentOS_7/x86_64/libopenssl1_0_0-1.0.2o-50.1.x86_64.rpm
+
+
 chown root:root /usr/lib/systemd/system/utserver.service
-systemctl enable utserver.service
+
+systemctl start utserver.service
+systemctl status utserver.service
+systemctl stop utserver.service
 
 
 echo "Browse to http://server:8080/gui and login with user admin and no password."
